@@ -1,0 +1,19 @@
+services:
+  fintrack-db:
+    image: postgres:latest
+    container_name: fintrack-db
+    networks:
+        - fintrack-network
+    environment:
+      POSTGRES_USER: martinpc
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: fintrack_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - finttrackdb-data:/var/lib/postgresql/data
+
+volumes:
+    finttrackdb-data:
+networks:
+    fintrack-network:
