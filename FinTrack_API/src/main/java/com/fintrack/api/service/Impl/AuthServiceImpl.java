@@ -1,9 +1,11 @@
 package com.fintrack.api.service.Impl;
 
 import com.fintrack.api.exception.InvalidAuthException;
+import com.fintrack.api.exception.UserNotFoundException;
 import com.fintrack.api.persistence.dto.request.LoginRequest;
 import com.fintrack.api.persistence.dto.request.RegisterRequest;
 import com.fintrack.api.persistence.dto.response.LoginResponse;
+import com.fintrack.api.persistence.dto.response.ProfileResponse;
 import com.fintrack.api.persistence.dto.response.RegisterResponse;
 import com.fintrack.api.persistence.model.User;
 import com.fintrack.api.persistence.repository.UserRepository;
@@ -58,5 +60,12 @@ public class AuthServiceImpl implements AuthService {
     );
 
     return new LoginResponse(accessToken, refreshToken, "Inicio de sesión exitoso");
+  }
+
+  @Override
+  public ProfileResponse getProfile(Long userId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+    return new ProfileResponse(user.getId(), user.getName(), user.getUsername(), user.getEmail());
   }
 }
