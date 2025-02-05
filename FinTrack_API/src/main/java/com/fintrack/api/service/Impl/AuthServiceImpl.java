@@ -3,6 +3,7 @@ package com.fintrack.api.service.Impl;
 import com.fintrack.api.exception.InvalidAuthException;
 import com.fintrack.api.exception.UserNotFoundException;
 import com.fintrack.api.persistence.dto.request.LoginRequest;
+import com.fintrack.api.persistence.dto.request.RefreshRequest;
 import com.fintrack.api.persistence.dto.request.RegisterRequest;
 import com.fintrack.api.persistence.dto.response.LoginResponse;
 import com.fintrack.api.persistence.dto.response.ProfileResponse;
@@ -67,5 +68,20 @@ public class AuthServiceImpl implements AuthService {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
     return new ProfileResponse(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+  }
+
+  @Override
+  public LoginResponse refreshToken(RefreshRequest request) {
+    String refreshToken = request.refreshToken();
+    String username = jwtUtils.extractUsername(refreshToken);
+    User user = userRepository.findByUsernameIgnoreCase(username)
+        .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+
+    if (!jwtUtils.isTokenValid(refreshToken, user)) {
+      throw new InvalidAuthException("Token inválido");
+    }
+
+    String newAccessToken = jwtUtils.generateAccessToken(user);
+    return new LoginResponse(newAccessToken, refreshToken, "Token actualizado");
   }
 }

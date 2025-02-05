@@ -4,6 +4,7 @@ import com.fintrack.api.persistence.dto.request.TransactionRequest;
 import com.fintrack.api.persistence.dto.response.GenericResponse;
 import com.fintrack.api.persistence.dto.response.PaginationResponse;
 import com.fintrack.api.persistence.dto.response.TransactionResponse;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface TransactionService {
@@ -12,11 +13,15 @@ public interface TransactionService {
 
   PaginationResponse<TransactionResponse> findByUserId(Long userId, Pageable pageable);
 
+  List<TransactionResponse> findAllByCategoryName(String categoryName);
+
+  List<TransactionResponse> findAllByUserId(Long userId);
+
   TransactionResponse findById(Long id);
 
-  TransactionResponse create(TransactionRequest request);
+  TransactionResponse create(TransactionRequest request, Long userId);
 
-  TransactionResponse update(Long id, TransactionRequest request);
+  TransactionResponse update(Long id, TransactionRequest request, Long userId);
 
-  GenericResponse delete(Long id);
+  GenericResponse delete(Long id, Long userId);
 }

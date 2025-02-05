@@ -1,6 +1,7 @@
 package com.fintrack.api.service;
 
 import com.fintrack.api.persistence.dto.request.LoginRequest;
+import com.fintrack.api.persistence.dto.request.RefreshRequest;
 import com.fintrack.api.persistence.dto.request.RegisterRequest;
 import com.fintrack.api.persistence.dto.response.LoginResponse;
 import com.fintrack.api.persistence.dto.response.ProfileResponse;
@@ -13,4 +14,6 @@ public interface AuthService {
   LoginResponse login(LoginRequest request);
 
   ProfileResponse getProfile(Long userId);
+
+  LoginResponse refreshToken(RefreshRequest request);
 }

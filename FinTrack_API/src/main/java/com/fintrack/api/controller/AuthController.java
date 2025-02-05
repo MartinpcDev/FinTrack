@@ -1,6 +1,7 @@
 package com.fintrack.api.controller;
 
 import com.fintrack.api.persistence.dto.request.LoginRequest;
+import com.fintrack.api.persistence.dto.request.RefreshRequest;
 import com.fintrack.api.persistence.dto.request.RegisterRequest;
 import com.fintrack.api.persistence.dto.response.LoginResponse;
 import com.fintrack.api.persistence.dto.response.ProfileResponse;
@@ -37,6 +38,12 @@ public class AuthController {
   public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(authService.login(request));
+  }
+
+  @PostMapping("/refresh-token")
+  public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshRequest request) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(authService.refreshToken(request));
   }
 
   @PreAuthorize("isAuthenticated()")

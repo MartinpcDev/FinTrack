@@ -3,6 +3,7 @@ package com.fintrack.api.mapper;
 import com.fintrack.api.persistence.dto.request.TransactionRequest;
 import com.fintrack.api.persistence.dto.response.TransactionResponse;
 import com.fintrack.api.persistence.model.Transaction;
+import com.fintrack.api.persistence.model.TransactionType;
 import java.util.List;
 
 public class TransactionMapper {
@@ -33,7 +34,7 @@ public class TransactionMapper {
     }
 
     Transaction transaction = new Transaction();
-    transaction.setType(transactionRequest.type());
+    transaction.setType(TransactionType.valueOf(transactionRequest.type()));
     transaction.setAmount(transactionRequest.amount());
 
     return transaction;
@@ -43,7 +44,7 @@ public class TransactionMapper {
       TransactionRequest transactionRequest) {
 
     if (transaction != null && transactionRequest != null) {
-      transaction.setType(transactionRequest.type());
+      transaction.setType(TransactionType.valueOf(transactionRequest.type()));
       transaction.setAmount(transactionRequest.amount());
     }
 
