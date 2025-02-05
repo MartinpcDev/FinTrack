@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class TransactionController {
 
   @GetMapping
   public ResponseEntity<PaginationResponse<TransactionResponse>> findAll(
-      @PageableDefault(sort = {"id"}) Pageable pageable) {
+      @ParameterObject @PageableDefault(sort = {"id"}) Pageable pageable) {
     return ResponseEntity.ok(transactionService.findAll(pageable));
   }
 
@@ -62,7 +63,7 @@ public class TransactionController {
   @GetMapping("/user")
   public ResponseEntity<PaginationResponse<TransactionResponse>> findByUserId(
       @AuthenticationPrincipal UserDetails userDetails,
-      @PageableDefault(sort = {"id"}) Pageable pageable) {
+      @ParameterObject @PageableDefault(sort = {"id"}) Pageable pageable) {
     Long userId = ((User) userDetails).getId();
     return ResponseEntity.ok(transactionService.findByUserId(userId, pageable));
   }
