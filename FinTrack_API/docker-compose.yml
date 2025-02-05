@@ -1,19 +1,40 @@
 services:
+
+  fintrack-api:
+    image: fintrack-api
+    container_name: fintrack-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fintrack-db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_ACCESS=${JWT_EXPIRES_ACCESS}
+      - JWT_EXPIRES_REFRESH=${JWT_EXPIRES_REFRESH}
+    ports:
+      - "8080:8080"
+    networks:
+      - fintrack-network
+    depends_on:
+      - fintrack-db
+
   fintrack-db:
     image: postgres:latest
     container_name: fintrack-db
     networks:
-        - fintrack-network
+      - fintrack-network
     environment:
-      POSTGRES_USER: martinpc
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: fintrack_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - finttrackdb-data:/var/lib/postgresql/data
 
 volumes:
-    finttrackdb-data:
+  finttrackdb-data:
 networks:
-    fintrack-network:
+  fintrack-network:
