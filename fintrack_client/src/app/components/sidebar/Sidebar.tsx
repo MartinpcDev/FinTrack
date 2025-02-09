@@ -7,17 +7,26 @@ import { ListIcon } from '../common/Icons/ListIcon';
 import { LogoutIcon } from '../common/Icons/LogoutIcon';
 import { MenuIcon } from '../common/Icons/MenuIcon';
 import { useState } from 'react';
+import { logoutSession } from '@/app/services/auth.service';
+import { useRouter } from 'next/navigation';
 
 interface SidebarProps {}
 
 export const Sidebar: React.FC<SidebarProps> = ({}) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const router = useRouter();
 
 	const toggleSidebar = () => {
 		setIsOpen(!isOpen);
 	};
 
-	const logout = () => {};
+	const logout = async () => {
+		await logoutSession();
+		router.push('/');
+		setTimeout(() => {
+			router.refresh();
+		}, 100);
+	};
 
 	return (
 		<>

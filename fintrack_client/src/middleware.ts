@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { profile } from './app/services/auth.service';
 
-export function middleware(request: NextRequest) {
-	const token = request.cookies.get('access_token')?.value;
-	if (!token) {
+export async function middleware(request: NextRequest) {
+	const user = await profile();
+
+	if (!user) {
 		return NextResponse.redirect(new URL('/', request.url));
 	}
 

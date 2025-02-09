@@ -1,6 +1,11 @@
 import { AxiosError } from 'axios';
 import { api } from '../http/api';
-import { getCustomCookie, setCustomCookie } from '../utils/cookies';
+import {
+	clearAllCookies,
+	clearCookie,
+	getCustomCookie,
+	setCustomCookie
+} from '../utils/cookies';
 
 export async function login(data: LoginRequest) {
 	try {
@@ -39,9 +44,9 @@ export async function refresh(data: RefreshRequest) {
 
 export async function profile() {
 	try {
-		const refreshToken = await getCustomCookie('refresh_token');
+		const accessToken = await getCustomCookie('access_token');
 		const response = await api.get<ProfileResponse>('/auth/profile', {
-			headers: { Authorization: `Bearer ${refreshToken}` }
+			headers: { Authorization: `Bearer ${accessToken}` }
 		});
 		return response.data;
 	} catch (error) {
@@ -49,4 +54,8 @@ export async function profile() {
 			throw error.response?.data;
 		}
 	}
+}
+
+export async function logoutSession() {
+	await clearAllCookies();
 }
