@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
 				id='default-sidebar'
 				className={`bg-slate-900 h-screen p-4 sm:flex sm:flex-col sm:w-full ${
 					isOpen
-						? 'fixed inset-0 w-3/4 max-w-[250px] z-40 pt-16'
+						? 'fixed inset-0 max-w-[250px] w-3/4 z-40 pt-16'
 						: 'hidden sm:block'
 				}`}>
 				{/* Contenedor con scroll si el contenido es largo */}

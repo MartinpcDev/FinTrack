@@ -17,3 +17,15 @@ export interface TransactionResponse {
 	message: string;
 	data: Transaction;
 }
+
+export interface TransactionPageData {
+	content: Transaction[];
+	page: number;
+	size: number;
+	total: number;
+	total_pages: number;
+}
+
+export interface DeleteResponse {
+	message: string;
+}
