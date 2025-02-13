@@ -10,8 +10,8 @@ import {
 export async function login(data: LoginRequest) {
 	try {
 		const response = await api.post<AuthResponse>('/auth/login', data);
-		await setCustomCookie('access_token', response.data.access_token);
 		await setCustomCookie('refresh_token', response.data.refresh_token);
+		await setCustomCookie('access_token', response.data.access_token);
 		return response.data;
 	} catch (error) {
 		if (error instanceof AxiosError) {

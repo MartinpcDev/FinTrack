@@ -30,7 +30,6 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
 
 	return (
 		<>
-			{/* Botón para abrir el menú en móviles */}
 			<button
 				onClick={toggleSidebar}
 				aria-controls='default-sidebar'
@@ -38,8 +37,6 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
 				className='fixed top-4 left-4 z-50 p-2 text-gray-500 rounded-lg shadow-md'>
 				<MenuIcon />
 			</button>
-
-			{/* Sidebar en pantallas grandes: siempre visible */}
 			<aside
 				id='default-sidebar'
 				className={`bg-slate-900 h-screen p-4 sm:flex sm:flex-col sm:w-full ${
