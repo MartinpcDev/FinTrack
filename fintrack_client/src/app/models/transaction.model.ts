@@ -13,6 +13,8 @@ export interface Transaction {
 	category: Category;
 }
 
+export type TransactionUpdate = Omit<Transaction, 'id'>;
+
 export interface TransactionResponse {
 	message: string;
 	data: Transaction;

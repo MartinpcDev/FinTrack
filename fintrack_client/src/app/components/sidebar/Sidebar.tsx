@@ -23,9 +23,6 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
 	const logout = async () => {
 		await logoutSession();
 		router.push('/');
-		setTimeout(() => {
-			router.refresh();
-		}, 100);
 	};
 
 	return (
@@ -57,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
 						</li>
 						<li>
 							<Link
-								href={'/dashboard/create-gasto'}
+								href={'/dashboard/gastos/create-gasto'}
 								className='flex items-center p-2 rounded-lg group opacity-60 hover:opacity-95 hover:bg-slate-800'>
 								<GastoIcon className='size-6' />
 								<span className='flex-1 ms-3 whitespace-nowrap'>Gasto</span>

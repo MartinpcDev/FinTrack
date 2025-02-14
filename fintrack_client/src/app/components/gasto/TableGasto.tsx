@@ -87,7 +87,7 @@ export const TableGasto: React.FC = () => {
 								<td className='px-6 py-4'>{transaction.category.name}</td>
 								<td className='px-6 py-4'>
 									<Link
-										href={`/dashboard/products/${encodeURIComponent(
+										href={`/dashboard/gastos/editar-gasto/${encodeURIComponent(
 											transaction.id
 										)}`}
 										className='font-medium text-yellow-400 hover:underline'>
