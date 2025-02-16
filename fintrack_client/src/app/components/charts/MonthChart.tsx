@@ -3,37 +3,15 @@
 import { Transaction } from '@/app/models/transaction.model';
 import { getAllByMonthAndYear } from '@/app/services/transaction.service';
 import { useEffect, useState } from 'react';
-import {
-	Bar,
-	BarChart,
-	Cell,
-	Legend,
-	Pie,
-	PieChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis
-} from 'recharts';
+import { Cell, Legend, Pie, PieChart } from 'recharts';
 import { toast } from 'sonner';
+import { CategoryData, renderCustomizedLabel } from './RenderCustomLabel';
+import { formatDate } from '../../utils/dateFormat';
+import { GastoTotalBox } from './GastoTotalBox';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-interface CategoryData {
-	[categoryName: string]: { name: string; value: number };
-}
-
-interface CustomizedLabelProps {
-	cx: number;
-	cy: number;
-	midAngle: number;
-	innerRadius: number;
-	outerRadius: number;
-	percent: number;
-	index: number;
-}
-
-export const MonthChart: React.FC = ({}) => {
+export const MonthChart: React.FC = () => {
 	const [data, setData] = useState<Transaction[]>([]);
 	const [month, setMonth] = useState(2);
 	const [year, setYear] = useState(new Date().getFullYear());
@@ -62,55 +40,72 @@ export const MonthChart: React.FC = ({}) => {
 
 	const pieData = Object.values(categoryData);
 
-	const RADIAN = Math.PI / 180;
-
-	const renderCustomizedLabel = ({
-		cx,
-		cy,
-		midAngle,
-		innerRadius,
-		outerRadius,
-		percent,
-		index
-	}: CustomizedLabelProps) => {
-		const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-		const x = cx + radius * Math.cos(-midAngle * RADIAN);
-		const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-		return (
-			<text
-				x={x}
-				y={y}
-				fill='white'
-				textAnchor={x > cx ? 'start' : 'end'}
-				dominantBaseline='central'>
-				{`${pieData[index].name} ${(percent * 100).toFixed(0)}%`}
-			</text>
-		);
+	const handlePreviousYear = () => {
+		setYear(prev => prev - 1);
 	};
+
+	const handleNextYear = () => {
+		setYear(prev => prev + 1);
+	};
+
+	const handlePreviousMonth = () => {
+		if (month > 1) {
+			setMonth(prev => prev - 1);
+		}
+	};
+
+	const handleNextMonth = () => {
+		if (month < 12) {
+			setMonth(prev => prev + 1);
+		}
+	};
+
 	return (
 		<>
-			<ResponsiveContainer width={400} height={400}>
-				<PieChart>
-					<Pie
-						data={pieData}
-						cx='50%'
-						cy='50%'
-						labelLine={false}
-						label={renderCustomizedLabel}
-						outerRadius={80}
-						fill='#8884d8'
-						dataKey='value'>
-						{pieData.map((entry, index) => (
-							<Cell
-								key={`cell-${index}`}
-								fill={COLORS[index % COLORS.length]}
-							/>
-						))}
-					</Pie>
-					<Legend />
-				</PieChart>
-			</ResponsiveContainer>
+			<GastoTotalBox month={month} year={year} />
+			<div className='flex flex-row items-center space-x-5'>
+				<div className='flex flex-row items-center space-x-3'>
+					<button onClick={handlePreviousYear}>-</button>
+					<span className='text-sky-400'>{year}</span>
+					<button onClick={handleNextYear}>+</button>
+				</div>
+				<div className='flex flex-row items-center space-x-3'>
+					<button onClick={handlePreviousMonth}>-</button>
+					<span className='text-sky-400'>
+						{formatDate(new Date(`${month}/1/${year}`), 'es', {
+							month: 'long'
+						})}
+					</span>
+					<button onClick={handleNextMonth}>+</button>
+				</div>
+			</div>
+			{data.length > 0 ? (
+				<div className='flex flex-col justify-center items-center'>
+					<PieChart width={400} height={400}>
+						<Pie
+							data={pieData}
+							cx='50%'
+							cy='50%'
+							labelLine={false}
+							label={props => renderCustomizedLabel({ ...props, categoryData })}
+							outerRadius={80}
+							fill='#8884d8'
+							dataKey='value'>
+							{pieData.map((entry, index) => (
+								<Cell
+									key={`cell-${index}`}
+									fill={COLORS[index % COLORS.length]}
+								/>
+							))}
+						</Pie>
+						<Legend />
+					</PieChart>
+				</div>
+			) : (
+				<div className='flex flex-col justify-center items-center h-full w-full'>
+					<p>No hay Datos</p>
+				</div>
+			)}
 		</>
 	);
 };
