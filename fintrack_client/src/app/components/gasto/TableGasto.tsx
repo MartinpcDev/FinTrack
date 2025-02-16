@@ -8,6 +8,7 @@ import {
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { formatDate } from '../../utils/dateFormat';
 
 export const TableGasto: React.FC = () => {
 	const [data, setData] = useState<Transaction[]>([]);
@@ -69,6 +70,9 @@ export const TableGasto: React.FC = () => {
 							<th scope='col' className='px-6 py-3'>
 								Categoria
 							</th>
+							<th scope='col' className='px-6 py-3'>
+								Fecha
+							</th>
 							<th scope='col' className='px-6 py-3'></th>
 							<th scope='col' className='px-6 py-3'></th>
 						</tr>
@@ -85,6 +89,11 @@ export const TableGasto: React.FC = () => {
 								</th>
 								<td className='px-6 py-4'>{transaction.amount}</td>
 								<td className='px-6 py-4'>{transaction.category.name}</td>
+								<td className='px-6 py-4'>
+									{formatDate(new Date(transaction.createdAt), 'es', {
+										dateStyle: 'long'
+									})}
+								</td>
 								<td className='px-6 py-4'>
 									<Link
 										href={`/dashboard/gastos/editar-gasto/${encodeURIComponent(

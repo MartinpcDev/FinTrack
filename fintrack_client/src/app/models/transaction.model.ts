@@ -11,6 +11,7 @@ export interface Transaction {
 	type: string;
 	amount: number;
 	category: Category;
+	createdAt: string;
 }
 
 export type TransactionUpdate = Omit<Transaction, 'id'>;
