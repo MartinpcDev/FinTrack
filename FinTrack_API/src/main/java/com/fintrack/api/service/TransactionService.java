@@ -13,6 +13,12 @@ public interface TransactionService {
 
   PaginationResponse<TransactionResponse> findByUserId(Long userId, Pageable pageable);
 
+  List<TransactionResponse> findAllByType(Long userId, String type);
+
+  Double getGastoTotalPorMes(Long userId, Integer mes, Integer anio);
+
+  List<TransactionResponse> getGastosPorMes(Long userId, Integer mes, Integer anio);
+
   List<TransactionResponse> findAllByCategoryName(String categoryName);
 
   List<TransactionResponse> findAllByUserId(Long userId);

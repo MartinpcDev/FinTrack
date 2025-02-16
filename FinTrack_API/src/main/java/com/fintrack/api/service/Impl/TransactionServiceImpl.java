@@ -10,6 +10,7 @@ import com.fintrack.api.persistence.dto.response.PaginationResponse;
 import com.fintrack.api.persistence.dto.response.TransactionResponse;
 import com.fintrack.api.persistence.model.Category;
 import com.fintrack.api.persistence.model.Transaction;
+import com.fintrack.api.persistence.model.TransactionType;
 import com.fintrack.api.persistence.model.User;
 import com.fintrack.api.persistence.repository.CategoryRepository;
 import com.fintrack.api.persistence.repository.TransactionRepository;
@@ -57,6 +58,32 @@ public class TransactionServiceImpl implements TransactionService {
         (int) transactionPage.getTotalElements(),
         transactionPage.getTotalPages()
     );
+  }
+
+  @Override
+  public List<TransactionResponse> findAllByType(Long userId, String type) {
+    List<Transaction> transactions = transactionRepository.findAllByUserIdAndType(userId,
+        TransactionType.valueOf(type));
+    return TransactionMapper.toTransactionResponseList(transactions);
+  }
+
+  @Override
+  public Double getGastoTotalPorMes(Long userId, Integer mes, Integer anio) {
+    List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
+    return transactions.stream()
+        .filter(transaction -> transaction.getCreatedAt().getMonthValue() == mes)
+        .filter(transaction -> transaction.getCreatedAt().getYear() == anio)
+        .map(Transaction::getAmount)
+        .reduce(0.0, Double::sum);
+  }
+
+  @Override
+  public List<TransactionResponse> getGastosPorMes(Long userId, Integer mes, Integer anio) {
+    List<Transaction> transactions = transactionRepository.findAllByUserId(userId).stream()
+        .filter(transaction -> transaction.getCreatedAt().getMonthValue() == mes)
+        .filter(transaction -> transaction.getCreatedAt().getYear() == anio)
+        .toList();
+    return TransactionMapper.toTransactionResponseList(transactions);
   }
 
   @Override

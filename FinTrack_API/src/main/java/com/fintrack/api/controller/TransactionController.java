@@ -68,6 +68,32 @@ public class TransactionController {
     return ResponseEntity.ok(transactionService.findByUserId(userId, pageable));
   }
 
+  @GetMapping("/type/{type}")
+  public ResponseEntity<List<TransactionResponse>> findAllByType(
+      @PathVariable String type,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    Long userId = ((User) userDetails).getId();
+    return ResponseEntity.ok(transactionService.findAllByType(userId, type));
+  }
+
+  @GetMapping("/total-expense/{month}/{year}")
+  public ResponseEntity<Double> getGastoTotalPorMes(
+      @PathVariable Integer month,
+      @PathVariable Integer year,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    Long userId = ((User) userDetails).getId();
+    return ResponseEntity.ok(transactionService.getGastoTotalPorMes(userId, month, year));
+  }
+
+  @GetMapping("/expenses/{month}/{year}")
+  public ResponseEntity<List<TransactionResponse>> getGastosPorMes(
+      @PathVariable Integer month,
+      @PathVariable Integer year,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    Long userId = ((User) userDetails).getId();
+    return ResponseEntity.ok(transactionService.getGastosPorMes(userId, month, year));
+  }
+
   @PostMapping
   public ResponseEntity<Map<String, Object>> create(
       @Valid @RequestBody TransactionRequest request,

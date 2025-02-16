@@ -17,7 +17,8 @@ public class TransactionMapper {
         transaction.getId(),
         transaction.getType(),
         transaction.getAmount(),
-        CategoryMapper.toCategoryResponse(transaction.getCategory())
+        CategoryMapper.toCategoryResponse(transaction.getCategory()),
+        transaction.getCreatedAt()
     );
   }
 

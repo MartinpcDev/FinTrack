@@ -1,6 +1,7 @@
 package com.fintrack.api.persistence.repository;
 
 import com.fintrack.api.persistence.model.Transaction;
+import com.fintrack.api.persistence.model.TransactionType;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
   List<Transaction> findAllByUserId(Long userId);
 
   Page<Transaction> findAllByUserId(Long userId, Pageable pageable);
+
+  List<Transaction> findAllByUserIdAndType(Long userId, TransactionType type);
 }
