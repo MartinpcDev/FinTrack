@@ -27,6 +27,41 @@ export async function getAllTransactions(page: number, size: number) {
 	}
 }
 
+export async function getAllByMonthAndYear(month: number, year: number) {
+	try {
+		const token = await getCustomCookie('access_token');
+		const response = await api.get<Transaction[]>(
+			`/transactions/expenses/${month}/${year}`,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+
+		return response.data;
+	} catch (error) {
+		if (error instanceof AxiosError) {
+			throw error.response?.data;
+		}
+	}
+}
+
+export async function getExpenseByMonthAndYear(month: number, year: number) {
+	try {
+		const token = await getCustomCookie('access_token');
+		const response = await api.get<number>(
+			`/transactions/total-expense/${month}/${year}`,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+		return response.data;
+	} catch (error) {
+		if (error instanceof AxiosError) {
+			throw error.response?.data;
+		}
+	}
+}
+
 export async function createTransaction(data: TransactionRequest) {
 	try {
 		const token = await getCustomCookie('access_token');
